@@ -20,7 +20,7 @@ jobs:
             cd /home/ubuntu
 
             if [ ! -d "my-website" ]; then
-              git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
+              git clone https://github.com/abhinav-sharma-dev/Website_CI-CD
             fi
 
             cd my-website
