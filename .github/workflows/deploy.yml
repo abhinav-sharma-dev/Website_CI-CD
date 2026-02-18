@@ -1,0 +1,32 @@
+name: Deploy Docker Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu
+
+            if [ ! -d "my-website" ]; then
+              git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
+            fi
+
+            cd my-website
+            git pull origin main
+
+            docker stop website || true
+            docker rm website || true
+            docker build -t website .
+            docker run -d -p 80:80 --name website website
